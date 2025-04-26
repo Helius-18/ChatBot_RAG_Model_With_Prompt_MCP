@@ -1,0 +1,25 @@
+                                                                        [Your Text File]
+                                                                                |
+                                                                        Split into Chunks
+                                                                                ↓
+                                                                ┌─────────────────────────┐
+                                                                │ all-MiniLM-L6-v2 (Embed)│ ← turns each chunk into a 384-d vector
+                                                                └─────────────────────────┘
+                                                                                ↓
+                                                                        Store in FAISS Index
+                                                                                ↓
+                                                                        User asks a question
+                                                                                ↓
+                                                                ┌───────────────────────────────┐
+                                                                │ all-MiniLM-L6-v2 (again)      │ ← question also becomes a 384-d vector
+                                                                └───────────────────────────────┘
+                                                                                ↓
+                                                                        FAISS searches for similar chunks
+                                                                                ↓
+                                                                🔎 Top-k most relevant document pieces
+                                                                                ↓
+                                                                Pass them to Ollama (Gemma 3B)
+                                                                                ↓
+                                                                🧠 Gemma "reads" those + your question
+                                                                                ↓
+                                                                🗣️ Generates an answer with context
