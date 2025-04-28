@@ -1,6 +1,6 @@
 import os
 from langchain_ollama import OllamaLLM as Ollama
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains import RetrievalQA
@@ -18,14 +18,14 @@ def load_and_split_text(file_path):
 
 # === 2. Create and optionally save FAISS vectorstore ===
 def create_and_save_vectorstore(documents, index_path):
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
     db = FAISS.from_documents(documents, embeddings)
     db.save_local(index_path)
     return db
 
 # === 3. Load FAISS vectorstore from disk ===
 def load_vectorstore(index_path):
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
     return FAISS.load_local(index_path, embeddings, allow_dangerous_deserialization=True)
 
 # === 4. Set up Ollama LLM ===
